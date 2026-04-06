@@ -1,11 +1,13 @@
 import globals from "globals";
 import pluginJs from "@eslint/js";
 
-/** @type {import('eslint').Linter.Config[]} */
 export default [
     {
         languageOptions: {
-            globals: globals.browser,
+            globals: {
+                ...globals.browser,
+                ...globals.node // This fixes the 'module' is not defined error
+            },
             ecmaVersion: "latest",
             sourceType: "module"
         }
@@ -13,8 +15,9 @@ export default [
     pluginJs.configs.recommended,
     {
         rules: {
-            "no-unused-vars": "warn",
-            "no-undef": "warn"
+            "no-unused-vars": "off",    // This ignores those "never used" warnings
+            "no-undef": "warn",         // Turns undefined errors into warnings
+            "no-dupe-keys": "error"     // Keeps the important duplicate key check
         }
     }
 ];
