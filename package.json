@@ -1,0 +1,20 @@
+{
+  "name": "colors",
+  "version": "1.0.0",
+  "description": "The COLORS web application allows a user to manage an array of colors. The user can add colors to his list of colors and search the list for a particular color.",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com//leocrow32809/COLORS.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs"
+}
