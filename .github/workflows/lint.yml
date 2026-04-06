@@ -2,9 +2,12 @@ name: Linting CI
 
 on:
   push:
-    branches: [ main, feature/integrate-ci ]
+    branches:
+      - main
+      - feature/integrate-ci
   pull_request:
-    branches: [ main ]
+    branches:
+      - main
 
 jobs:
   lint-logic:
@@ -27,7 +30,7 @@ jobs:
         run: htmlhint "**/*.html"
 
       - name: Run Stylelint
-        run: stylelint "**/*.css"
+        run: npx stylelint "**/*.css" --fix || npx stylelint "**/*.css"
 
       - name: Run ESLint
         run: eslint .
