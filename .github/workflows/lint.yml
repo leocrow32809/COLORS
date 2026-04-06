@@ -24,13 +24,13 @@ jobs:
 
       - name: Install dependencies
         run: |
-          npm install -g eslint stylelint stylelint-config-standard htmlhint globals @eslint/js
+          npm install eslint stylelint stylelint-config-standard htmlhint globals @eslint/js
 
       - name: Run HTML Hint
-        run: htmlhint "**/*.html"
+        run: npx htmlhint "**/*.html"
 
       - name: Run Stylelint
         run: npx stylelint "**/*.css" --fix || npx stylelint "**/*.css"
 
       - name: Run ESLint
-        run: eslint .
+        run: npx eslint .
