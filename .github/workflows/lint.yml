@@ -31,12 +31,15 @@ jobs:
 
       - name: Run Stylelint
         run: |
-          # This ensures the stylelint binary is executable
           chmod +x ./node_modules/.bin/stylelint
           ./node_modules/.bin/stylelint "**/*.css" --fix || ./node_modules/.bin/stylelint "**/*.css"
 
       - name: Run ESLint
-        run: npx eslint .
+        run: |
+          # Apply the same fix to ESLint
+          chmod +x ./node_modules/.bin/eslint
+          ./node_modules/.bin/eslint .
+
   test-logic:
     runs-on: ubuntu-latest
     services:
