@@ -2,15 +2,19 @@
 <?php
 
 	$inData = getRequestInfo();
+              if (!isset($inData["login"]) || !isset($inData["password"])) {
+                  returnWithError("Missing login or password in request body");
+                  exit();
+              }
 	
 	$id = 0;
 	$firstName = "";
 	$lastName = "";
 
-    $dbHost = getenv('DB_HOST') ?: 'localhost';
-    $dbUser = getenv('DB_USER') ?: 'TheBeast';
-    $dbPass = getenv('DB_PASS') ?: 'WeLoveCOP4331';
-    $dbName = getenv('DB_NAME') ?: 'COP4331';
+    $dbHost = "127.0.0.1";
+    $dbUser = "TheBeast";
+    $dbPass = "WeLoveCOP4331";
+    $dbName = "COP4331";
 
 	$conn = new mysqli($dbHost, $dbUser, $dbPass, $dbName);
 	if( $conn->connect_error )
@@ -38,9 +42,14 @@
 	}
 	
 	function getRequestInfo()
-	{
-		return json_decode(file_get_contents('php://input'), true);
-	}
+    {
+        $json = file_get_contents('php://input');
+        $data = json_decode($json, true);
+
+        // If decoding fails or data is empty, return an empty array
+        // instead of letting the script crash later.
+        return $data ?? [];
+    }
 
 	function sendResultInfoAsJson( $obj )
 	{

@@ -75,8 +75,8 @@ jobs:
           echo "Waiting for MySQL..."
           sleep 2
           done
-          # Give it 3 extra seconds to finish initializing schemas
-          sleep 3
+          # Give it 6 extra seconds to finish initializing schemas
+          sleep 6
 
       - name: Seed Database
         run: |
