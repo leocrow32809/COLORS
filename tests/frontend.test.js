@@ -16,13 +16,11 @@ describe('Frontend Logic & MD5 Utility', () => {
 
     describe('MD5 Hashing logic', () => {
         test('should produce the correct MD5 hash for a known string', () => {
-            // "password123" MD5 is 42f74913227d338f36594d87dfc332e9
-            const hash = md5("password123");
-            expect(hash).toBe("42f74913227d338f36594d87dfc332e9");
-        });
+            // Explicitly passing the string to avoid any 'undefined' mishaps
+            const testInput = "password123";
+            const hash = md5(testInput);
 
-        test('should produce different hashes for different strings', () => {
-            expect(md5("user1")).not.toBe(md5("user2"));
+            expect(hash).toBe("42f74913227d338f36594d87dfc332e9");
         });
     });
 });

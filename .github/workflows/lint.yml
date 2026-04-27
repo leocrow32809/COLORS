@@ -69,6 +69,13 @@ jobs:
       - name: Start PHP Server
         run: php -S localhost:8080 -t . &
 
+      - name: Wait for MySQL
+        run: |
+          until mysqladmin ping -h "127.0.0.1" --silent; do
+            echo "Waiting for MySQL to be ready..."
+            sleep 3
+          done
+
       - name: Seed Database
         run: |
           # Use the root password defined above to create the table
