@@ -1,10 +1,11 @@
-name: Linting CI
+name: CI Pipeline
 
 on:
   push:
     branches:
       - main
       - feature/integrate-ci
+      - feature/github-actions-testing
   pull_request:
     branches:
       - main
@@ -23,14 +24,81 @@ jobs:
           node-version: '20'
 
       - name: Install dependencies
-        run: |
-          npm install eslint stylelint stylelint-config-standard htmlhint globals @eslint/js
+        run: npm install
 
       - name: Run HTML Hint
         run: npx htmlhint "**/*.html"
 
       - name: Run Stylelint
-        run: npx stylelint "**/*.css" --fix || npx stylelint "**/*.css"
+        run: |
+          chmod +x ./node_modules/.bin/stylelint
+          ./node_modules/.bin/stylelint "**/*.css" --fix || ./node_modules/.bin/stylelint "**/*.css"
 
       - name: Run ESLint
-        run: npx eslint .
+        run: |
+          # Apply the same fix to ESLint
+          chmod +x ./node_modules/.bin/eslint
+          ./node_modules/.bin/eslint .
+
+  test-logic:
+    runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: PassNum-0000001o
+          MYSQL_DATABASE: COP4331
+          MYSQL_USER: TheBeast
+          MYSQL_PASSWORD: WeLoveCOP4331
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: mysqli, pdo_mysql
+
+      - name: Install Node Dependencies
+        run: npm install
+
+      - name: Start PHP Server
+        run: php -S localhost:8080 -t . &
+
+      - name: Wait for MySQL
+        run: |
+          until mysqladmin ping -h "127.0.0.1" --silent; do
+          echo "Waiting for MySQL..."
+          sleep 2
+          done
+          # Give it 6 extra seconds to finish initializing schemas
+          sleep 6
+
+      - name: Seed Database
+        run: |
+          mysql -h 127.0.0.1 -P 3306 -u root -pPassNum-0000001o COP4331 -e "
+          CREATE TABLE IF NOT EXISTS Users (
+            ID INT AUTO_INCREMENT PRIMARY KEY,
+            firstName VARCHAR(50),
+            lastName VARCHAR(50),
+            Login VARCHAR(50),
+            Password VARCHAR(50)
+          );
+          INSERT INTO Users (firstName, lastName, Login, Password) 
+          VALUES ('Test', 'User', 'testuser', 'password123');"
+
+      - name: Run All Tests
+        run: |
+          # Grant execution permission to jest
+          chmod +x ./node_modules/.bin/jest
+          # Run the test through the direct path
+          ./node_modules/.bin/jest
+        env:
+          DB_HOST: 127.0.0.1
+          DB_USER: TheBeast
+          DB_PASS: WeLoveCOP4331
+          DB_NAME: COP4331
