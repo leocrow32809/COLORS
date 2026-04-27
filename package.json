@@ -17,5 +17,8 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs"
+  "type": "commonjs",
+  "devDependencies": {
+    "stylelint-config-standard": "^40.0.0"
+  }
 }
