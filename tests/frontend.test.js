@@ -1,4 +1,13 @@
-const md5 = require('../public/js/md5.js');
+const md5Import = require('../public/js/md5.js');
+
+// Log this to the GitHub console so we can see the object structure
+console.log('DEBUG: md5Import type is', typeof md5Import);
+console.log('DEBUG: md5Import keys are', Object.keys(md5Import));
+
+// Comprehensive extraction
+const md5 = (typeof md5Import === 'function')
+    ? md5Import
+    : (md5Import.md5 || md5Import.default || md5Import);
 
 // A helper to simulate validation logic
 const isInputValid = (str) => str !== null && str.trim().length > 0;
