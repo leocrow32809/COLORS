@@ -1,4 +1,5 @@
-const md5 = require('../public/js/md5.js');
+const md5Import = require('../public/js/md5.js');
+const md5 = typeof md5Import === 'function' ? md5Import : md5Import.md5;
 
 // A helper to simulate validation logic
 const isInputValid = (str) => str !== null && str.trim().length > 0;

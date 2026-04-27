@@ -72,13 +72,14 @@ jobs:
       - name: Wait for MySQL
         run: |
           until mysqladmin ping -h "127.0.0.1" --silent; do
-            echo "Waiting for MySQL to be ready..."
-            sleep 3
+          echo "Waiting for MySQL..."
+          sleep 2
           done
+          # Give it 3 extra seconds to finish initializing schemas
+          sleep 3
 
       - name: Seed Database
         run: |
-          # Use the root password defined above to create the table
           mysql -h 127.0.0.1 -P 3306 -u root -pPassNum-0000001o COP4331 -e "
           CREATE TABLE IF NOT EXISTS Users (
             ID INT AUTO_INCREMENT PRIMARY KEY,
