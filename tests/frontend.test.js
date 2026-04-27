@@ -1,10 +1,9 @@
 const md5lib = require('../public/js/md5.js');
 
-// This wrapper ensures that NO MATTER WHAT, the library gets a string.
-const md5 = (str) => {
-    return (typeof md5lib === 'function')
-        ? md5lib(String(str))
-        : md5lib.md5(String(str));
+// This wrapper ensures the library cannot 'miss' the input string
+const md5 = (input) => {
+    const fn = (typeof md5lib === 'function') ? md5lib : md5lib.md5;
+    return fn(String(input));
 };
 
 // A helper to simulate validation logic
@@ -23,7 +22,10 @@ describe('Frontend Logic & MD5 Utility', () => {
 
     describe('MD5 Hashing logic', () => {
         test('should produce the correct MD5 hash for a known string', () => {
-            const hash = md5("password123");
+            // Using a variable and forcing a string primitive
+            const testInput = "password123";
+            const hash = md5(testInput);
+
             expect(hash).toBe("42f74913227d338f36594d87dfc332e9");
         });
     });
