@@ -7,7 +7,12 @@
 	$firstName = "";
 	$lastName = "";
 
-	$conn = new mysqli("localhost", "TheBeast", "WeLoveCOP4331", "COP4331"); 	
+    $dbHost = getenv('DB_HOST') ?: 'localhost';
+    $dbUser = getenv('DB_USER') ?: 'TheBeast';
+    $dbPass = getenv('DB_PASS') ?: 'WeLoveCOP4331';
+    $dbName = getenv('DB_NAME') ?: 'COP4331';
+
+	$conn = new mysqli($dbHost, $dbUser, $dbPass, $dbName);
 	if( $conn->connect_error )
 	{
 		returnWithError( $conn->connect_error );
