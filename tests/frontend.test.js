@@ -1,13 +1,4 @@
-const md5Import = require('../public/js/md5.js');
-
-// Log this to the GitHub console so we can see the object structure
-console.log('DEBUG: md5Import type is', typeof md5Import);
-console.log('DEBUG: md5Import keys are', Object.keys(md5Import));
-
-// Comprehensive extraction
-const md5 = (typeof md5Import === 'function')
-    ? md5Import
-    : (md5Import.md5 || md5Import.default || md5Import);
+const md5 = require('../public/js/md5.js');
 
 // A helper to simulate validation logic
 const isInputValid = (str) => str !== null && str.trim().length > 0;
@@ -25,9 +16,10 @@ describe('Frontend Logic & MD5 Utility', () => {
 
     describe('MD5 Hashing logic', () => {
         test('should produce the correct MD5 hash for a known string', () => {
-            // Use a hardcoded string directly in the function call
-            // to prove the input isn't the problem.
-            const hash = md5("password123");
+            // Use .call() or force a string primitive to ensure
+            // the library doesn't try to read from a global 'this'
+            const testInput = "password123";
+            const hash = md5(testInput, null, false);
 
             expect(hash).toBe("42f74913227d338f36594d87dfc332e9");
         });
