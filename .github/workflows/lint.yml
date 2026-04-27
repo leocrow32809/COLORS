@@ -30,7 +30,10 @@ jobs:
         run: npx htmlhint "**/*.html"
 
       - name: Run Stylelint
-        run: npx stylelint "**/*.css" --fix || npx stylelint "**/*.css"
+        run: |
+          # This ensures the stylelint binary is executable
+          chmod +x ./node_modules/.bin/stylelint
+          ./node_modules/.bin/stylelint "**/*.css" --fix || ./node_modules/.bin/stylelint "**/*.css"
 
       - name: Run ESLint
         run: npx eslint .
