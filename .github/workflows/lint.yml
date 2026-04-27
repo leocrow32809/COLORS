@@ -84,7 +84,11 @@ jobs:
           VALUES ('Test', 'User', 'testuser', 'password123');"
 
       - name: Run All Tests
-        run: npm test
+        run: |
+          # Grant execution permission to jest
+          chmod +x ./node_modules/.bin/jest
+          # Run the test through the direct path
+          ./node_modules/.bin/jest
         env:
           DB_HOST: 127.0.0.1
           DB_USER: TheBeast
