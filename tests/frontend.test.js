@@ -1,4 +1,4 @@
-const md5 = require('../js/md5.js');
+const md5 = require('../public/js/md5.js');
 
 // A helper to simulate validation logic
 const isInputValid = (str) => str !== null && str.trim().length > 0;
